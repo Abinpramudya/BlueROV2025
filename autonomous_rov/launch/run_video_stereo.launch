@@ -1,0 +1,13 @@
+<launch>		
+	<group> 
+	<arg name="namespace" default=""/>
+
+	<node pkg="autonomous_rov" exec="video" name="video" namespace="$(var namespace)" output="screen">
+	</node>		
+
+	<node pkg="autonomous_rov" exec="video2" name="video2" namespace="$(var namespace)" output="screen">
+	</node>		
+		
+	</group>
+</launch>	
+
