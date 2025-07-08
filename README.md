@@ -52,5 +52,13 @@ colcon build
 * [ ] Write full documentation for each package
 
 ---
+## 👥 Credits
 
-Stay tuned for updates — and if you’re working on similar projects, feel free to fork or open issues! 😄
+**Work Supervisor**
+
+* Prof. Vincent Hugel (Université de Toulon - UTLN)
+
+**Co-workers**
+
+* [Mahmoud Aboelrayat](https://github.com/MahmoudAboelrayat)
+* [Anastasia Frolova](https://github.com/anastasiiafrolova211)
