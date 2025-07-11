@@ -13,8 +13,8 @@ This project is currently a work in progress and will be updated as development 
 | Package Name         | Status        | Comment                                                          |
 | -------------------- | ------------- | ---------------------------------------------------------------- |
 | `autonomous_rov`     | ✅ Done        | Main package for communication and control of BlueROV            |
-| `camera_calibration` | ✅ Done (kinda)       | Underwater camera calibration using OpenCV + chessboard patterns(i still want to add kalibr into this)|
-| `pinger360`          | ❌ In Progress | Code available, documentation is still pending and i will add result too                   |
+| `camera_calibration` | ✅ Done        | Underwater camera calibration using OpenCV + chessboard patterns(i still want to add kalibr into this)|
+| `pinger360`          | ✅ Done  | finished with documentation         |
 | `orbslam3`           | ❌ In Progress | Actively working on integration and testing (this work has been the bane to my existence, may god help me)|
 
 ---
@@ -45,7 +45,6 @@ colcon build
 
 ## 📌 TODO
 
-* [ ] Complete and clean up `pinger360` documentation + result of experiments !
 * [ ] add `kalibr` as another option for calibration
 * [ ] Finalize and test `orbslam3` integration into ros2 with proper documentation
 * [ ] Add launch files and example bags
