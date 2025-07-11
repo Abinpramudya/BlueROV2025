@@ -86,12 +86,4 @@ Once everything is running, you can visualize the sonar data in **Foxglove Studi
 
 Here’s an example of what the sonar data looks like:
 
-![Ping360 output in Foxglove](imagepath)
-
-To include this in your Markdown file for GitHub or any static viewer:
-
-```md
 ![Ping360 output in Foxglove](images/foxglove_pinger1.png)
-```
-
-Let me know if you want help adding image publishing code so the raw data can be visualized more intuitively in Foxglove (e.g., converting sonar readings into a pointcloud or radar-like display).
