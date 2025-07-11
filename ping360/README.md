@@ -1,5 +1,3 @@
-Here’s the updated and refined version of your Markdown file with your new instructions included:
-
 ---
 
 # Ping360 Package Collection
