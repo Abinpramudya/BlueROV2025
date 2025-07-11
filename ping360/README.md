@@ -1,73 +1,62 @@
+
 ---
 
 # Ping360 Package Collection
 
-This directory contains a collection of interrelated ROS 2 packages designed for working with the **Ping360 imaging sonar**. This has been the core focus of my internship — learning how to operate, integrate, and experiment with this sensor.
+This directory contains a set of ROS 2 packages for working with the **Ping360 imaging sonar**. This project has been the main focus of my internship, where I explored how to operate and integrate this sensor in real-world scenarios.
+
+### Sensor Information
+
+* **Device**: [Blue Robotics Ping360 Sonar](https://bluerobotics.com/store/sonars/imaging-sonars/ping360-sonar-r1-rp/)
+* **Documentation**: [Official Product Page](https://bluerobotics.com/store/sonars/imaging-sonars/ping360-sonar-r1-rp/)
+
+### Acknowledgements
+
+Based on the work by [Centrale Nantes Robotics](https://github.com/CentraleNantesRobotics/ping360_sonar/), which provided the core codebase for the sonar interface.
+
+### Included Packages
+
+* `ping360_sonar`: Main ROS 2 node for Ping360
+* `ping360_sonar_msgs`: Custom message definitions used by the node
+* `ping_sonar_ros-master`: Prerequisite utility package from the MIR program
+
+### Project Overview
+
+These packages are tested with a **BlueROV2 Heavy Configuration**, particularly in a controlled water tank environment. The goal is to evaluate how the Ping360 performs under different conditions and explore various configuration strategies.
+
+### Recommended Tools
+
+* `rqt`: For easy GUI-based ROS visualization
+* `Foxglove Studio`: For a cleaner and more modern view of sonar data
 
 ---
 
-### 📌 Sensor Information
+## Getting Started
 
-* **Sensor Used**: [Blue Robotics Ping360 Sonar](https://bluerobotics.com/store/sonars/imaging-sonars/ping360-sonar-r1-rp/)
-* **Official Documentation**: [Ping360 Documentation](https://bluerobotics.com/store/sonars/imaging-sonars/ping360-sonar-r1-rp/)
+### 1. Setup
 
----
-
-### 🙏 Acknowledgements
-
-Special thanks to [Centrale Nantes Robotics](https://github.com/CentraleNantesRobotics/ping360_sonar/) for their excellent open-source implementation, which this package builds upon.
-
----
-
-### 📦 Included Packages
-
-* **`ping360_sonar`** – Main package containing the ROS 2 node implementation for the sonar.
-* **`ping360_sonar_msgs`** – Custom message definitions used by the `ping360_sonar` package.
-* **`ping_sonar_ros-master`** – Prerequisite package from the MIR program, required only during installation.
-
----
-
-### 🧪 Project Scope
-
-This package suite is built for deployment on a **BlueROV2 Heavy Configuration**. Testing and development were conducted in a **controlled water tank environment**, focusing on evaluating the sonar’s performance under different scenarios and code configurations.
-
----
-
-### ✅ Recommended Tools
-
-To enhance visualization and ease of interaction, the following tools are highly recommended:
-
-* **`rqt`** – A modular ROS GUI for debugging and visualization.
-* **`Foxglove Studio`** – A modern ROS visualization tool, especially useful for viewing sonar data in real-time.
-
----
-
-## 🚀 Getting Started
-
-### Step 1: Setup
-
-Clone or move all the included packages into your ROS 2 workspace (e.g., `src/` directory), then build and source:
+Place all the listed packages into your ROS 2 workspace (`src` folder), then build and source:
 
 ```bash
 colcon build
 source install/setup.bash
 ```
 
----
+### 2. First-Time Run
 
-### Step 2: First-Time Run Instructions
+Before running the node, check that the sensor is properly connected:
 
-Before launching the node, make sure the Ping360 sensor is properly connected and recognized by the BlueROV:
+1. Open your BlueROV’s web interface: `http://192.168.2.2/` (or your specific IP)
+2. Go to the **Ping360** tab and ensure the sensor is detected and responsive
 
-1. Open your browser and go to your BlueROV’s configuration page:
-   `http://192.168.2.2/` *(or whichever IP your BlueROV is configured to)*
-2. Navigate to the **Ping360** tab and confirm the sensor is detected and active.
-
-Once confirmed, you can launch the main ROS 2 node with:
+Then run the main node with:
 
 ```bash
 ros2 run ping360_sonar ping360.py
 ```
+
+---
+
 
 once ran, you can see three topics
 
