@@ -68,3 +68,30 @@ Once confirmed, you can launch the main ROS 2 node with:
 ```bash
 ros2 run ping360_sonar ping360.py
 ```
+
+once ran, you can see three topics
+
+1. /scan (you can ignore this one) | message used :sensor_msgs/msg/LaserScan
+2. /scan_echo : this is where all the data lives : ping360_sonar_msgs/msg/SonarEcho
+3. /scan_image : the image of the scan sonar : sensor_msgs/msg/Image
+
+
+You can add that section like this, using a placeholder for the image path so it’s easy to update later:
+
+---
+
+### Visual Output in Foxglove
+
+Once everything is running, you can visualize the sonar data in **Foxglove Studio**. This provides a clean, real-time interface for inspecting the Ping360 output.
+
+Here’s an example of what the sonar data looks like:
+
+![Ping360 output in Foxglove](imagepath)
+
+To include this in your Markdown file for GitHub or any static viewer:
+
+```md
+![Ping360 output in Foxglove](images/foxglove_pinger1.png)
+```
+
+Let me know if you want help adding image publishing code so the raw data can be visualized more intuitively in Foxglove (e.g., converting sonar readings into a pointcloud or radar-like display).
