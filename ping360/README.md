@@ -5,6 +5,12 @@
 
 This directory contains a set of ROS 2 packages for working with the **Ping360 imaging sonar**. This project has been the main focus of my internship, where I explored how to operate and integrate this sensor in real-world scenarios.
 
+### my setup
+- Linux Ubuntu 22.04
+- ROS 2 Humble
+- BlueROV Heavy configuration
+- Pinger360 V1
+
 ### Sensor Information
 
 * **Device**: [Blue Robotics Ping360 Sonar](https://bluerobotics.com/store/sonars/imaging-sonars/ping360-sonar-r1-rp/)
