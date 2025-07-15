@@ -33,6 +33,21 @@ These packages are tested with a **BlueROV2 Heavy Configuration**, particularly 
 
 ## Getting Started
 
+### 0. Library Dependencies
+
+Before running the package, make sure the following libraries are installed to avoid import and runtime errors:
+
+1. **[Ping Python Library (BlueRobotics fork)](https://github.com/bluerobotics/ping-python)**
+   Required for Python-based interaction with the Ping sonar device. Install this first for proper functionality of the Python scripts.
+
+2. **[Ping C++ Node (Submodule)](https://github.com/GSO-soslab/ping-cpp?tab=readme-ov-file)**
+   This C++ version of the Ping interface is available as a submodule. *(Note: This project primarily uses the Python implementation.)*
+
+3. **[ROS `image_transport`](http://wiki.ros.org/image_transport)**
+   Required for handling image topics in the C++ node. Ensure this package is installed if you're using the C++ interface.
+
+
+
 ### 1. Setup
 
 Place all the listed packages into your ROS 2 workspace (`src` folder), then build and source:
@@ -49,7 +64,7 @@ Before running the node, check that the sensor is properly connected:
 1. Open your BlueROV’s web interface: `http://192.168.2.2/` (or your specific IP)
 2. Go to the **Ping360** tab and ensure the sensor is detected and responsive
 
-![Ping360 output in Foxglove](images/blueOS_ping.png)
+![Ping360 output in Foxglove](images/UI/blueOS_ping.png)
 
 if everything is in order, you can ran the code with following command, make sure everything has been built and sourced properly.
 
@@ -87,7 +102,7 @@ Once everything is running, you can visualize the sonar data in **Foxglove Studi
 
 Here’s an example of what the sonar data looks like:
 
-![Ping360 output in Foxglove](images/foxglove_pinger1.png)
+![Ping360 output in Foxglove](images/UI/foxglove_pinger1.png)
 
 
 
@@ -186,5 +201,148 @@ If you want to **replay the sonar data locally** without connecting to the actua
 
 You can download the bag file from this Google Drive folder:
 
-👉 [ROS Bag Folder](https://drive.google.com/drive/folders/1jmrwAuXjsGBp1a2yrn4YiLzvOXilutw_?usp=drive_link)
+👉 [ROS Bag Link](https://drive.google.com/drive/folders/1jmrwAuXjsGBp1a2yrn4YiLzvOXilutw_?usp=drive_link)
+
+---
+Here’s a professional, clear, and well-structured rewrite of your **Results** section, preserving your voice but improving readability, grammar, and technical tone:
+
+---
+
+## Results
+
+Let’s dive into the testing phase. All experiments were conducted in a controlled environment — specifically, the water tank at the University of Toulon, as shown below:
+
+![Pool](images/pool.jpeg)
+
+Note: The tank was shared with a colleague who had deployed a buoy for their own experiments. As a result, some of their equipment appears in the BlueROV’s camera feed and sonar scans.
+
+The goal of these experiments was to observe how the scanning sonar (Ping360) responds to parameter tweaks in real-time. To facilitate tuning, I used **RQT**, a ROS visualization tool. If you have ROS installed, you can launch RQT with the following command:
+
+```bash
+rqt
+```
+
+Once launched, you’ll see a window like this:
+
+![RQT](images/UI/RQT.png)
+
+---
+
+## 1. `angle_step` Parameter
+
+One of the key parameters affecting sonar performance is `angle_step`. This defines the angular increment of the stepper motor as it rotates the sonar head. A smaller step results in higher resolution (slower scan), while a larger step yields faster but lower-resolution scans.
+
+Refer to this illustration from the [BlueRobotics website](https://bluerobotics.com/learn/understanding-and-using-scanning-sonars/) for a better understanding:
+
+![Pinger angle step](images/pinger.png)
+
+In the code, the parameter is defined as follows:
+
+```python
+parameters = {
+    ...
+    'angle_step': [1, 1, 20],
+    ...
+}
+```
+
+Below are results from varying the `angle_step` value and their impact on sonar performance:
+
+---
+
+### 1.1 `angle_step = 1` (Default)
+
+This is the default setting, resulting in the **slowest and most detailed** scan.
+
+![Pinger angle step 1](images/result/angle_step/Pinger_Astep_1.png)
+
+**Discussion:**
+The sonar returns a high-resolution scan of the pool environment, clearly capturing both the walls and foreign objects. As seen in the camera feed, there's an object directly in front of the BlueROV. This object is also distinctly visible in the sonar image as a bright reflection, accurately corresponding to its position relative to the vehicle.
+
+---
+
+### 1.2 `angle_step = 5`
+
+Next, I increased the step size to 5.
+
+![Pinger angle step 5](images/result/angle_step/pinger_Astep_5.png)
+
+**Discussion:**
+The overall scene remains recognizable, but resolution has noticeably degraded. Pixelation and noise are more apparent. However, the scan speed improves significantly. This suggests that `angle_step = 5` might be a good compromise for tasks like **real-time collision avoidance**, where speed is more critical than fine detail.
+
+---
+
+### 1.3 `angle_step = 10`
+
+Finally, I tested with `angle_step = 10`.
+
+![Pinger angle step 10](images/result/angle_step/Pinger_Astep_10.png)
+
+**Discussion:**
+The sonar scan becomes very coarse at this setting. While major structures (like pool walls) remain detectable, small objects are hard to distinguish. Despite the significant loss in detail, the faster scan time shows potential for **high-speed navigation or rapid situational awareness**, provided that low resolution is acceptable.
+
+---
+
+## 2. `angle_sector` Parameter
+
+The `angle_sector` parameter defines the angular coverage of the sonar scan — essentially, how wide of an area the sensor should sweep. This is particularly useful when you're only interested in scanning a specific region in front of your ROV.
+
+**Important Note:**
+During my experiments, I was able to successfully change the *scope* of the angle (i.e., how wide the scan is), but I was **not** able to change the *origin* of the scanning sector — meaning the scan always remained centered in **front** of the pinger. If your pinger is properly installed, this corresponds to the front-facing direction of your robot.
+
+In the code, the parameter is defined as follows:
+
+```python
+parameters = {
+    ...
+    'angle_sector': [360, 60, 360],
+    ...
+}
+```
+
+---
+
+### 2.1 `angle_sector = 60`
+
+In this configuration, the sonar scans a 60° sector and reverses direction upon reaching the angle limit.
+
+![Pinger angle sector 60](images/result/angle_sector/pinger_aSector_60.png)
+
+**Discussion:**
+The sensor focuses tightly on the front of the robot. You can see that the scan covers a narrow wedge, and once the 60° range is reached, it immediately reverses. This mode is useful for targeted front-view detection.
+
+---
+
+### 2.2 `angle_sector = 120`
+
+Here, the scanning angle was increased to 120°.
+
+![Pinger angle sector 120](images/result/angle_sector/pinger_aSector_120.png)
+
+**Discussion:**
+The sonar still focuses on the front but now covers a noticeably wider area. This setting provides a better balance between situational awareness and scan time.
+
+---
+
+### 2.3 `angle_sector = 180`
+
+Finally, I set the scanning range to 180°.
+
+![Pinger angle sector 180](images/result/angle_sector/pinger_aSector_180.png)
+
+**Discussion:**
+The scan now covers a full 180° arc in front of the ROV. While the image resolution remains consistent, the broader coverage provides more context of the environment at the cost of slightly longer scan durations.
+
+---
+## Conclusion
+
+Although I haven't extensively tuned all available parameters, it’s clear that this sensor has significant limitations particularly when it comes to speed. Compared to faster localization methods like LiDAR, the Ping sonar is relatively slow, even when adjusting settings such as `angle_step` and `angle_sector`.
+
+While increasing the scanning speed is possible, it comes at the cost of resolution. Even with reduced angle coverage and faster stepping, the update rate remains insufficient for real-time, high-speed localization tasks.
+
+That said, there appears to be a *sweet spot* — a balance between `angle_step` and `angle_sector` — that could make the sensor usable for certain applications like obstacle detection or slow-moving navigation. However, due to these constraints, I’ve decided to pause this part of the project for now and shift my focus to other localization techniques, particularly the implementation of **ORB-SLAM3**, which I will also document and update in this repository.
+
+Thank you for reading, and have a great day !
+
+**Muhammad Azka Bintang Pramudya**
 
